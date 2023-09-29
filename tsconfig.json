@@ -23,6 +23,18 @@
       ],
       "@libs/redis/*": [
         "libs/redis/src/*"
+      ],
+      "@libs/typeorm": [
+        "libs/typeorm/src"
+      ],
+      "@libs/typeorm/*": [
+        "libs/typeorm/src/*"
+      ],
+      "@libs/common": [
+        "libs/common/src"
+      ],
+      "@libs/common/*": [
+        "libs/common/src/*"
       ]
     }
   }
