@@ -4,12 +4,19 @@ import { PageInfo } from '../api/common-page';
 import { CommonResult } from '../api/common-result';
 import { AUTHORIZATION_PREFIX } from './consts';
 
-export async function setupSwagger(app: INestApplication): Promise<void> {
-  // TODO:
+export async function setupSwagger(
+  app: INestApplication,
+  configParams: {
+    title?: string;
+    description?: string;
+    version?: string;
+    path?: string;
+  } = {},
+): Promise<void> {
   const config = new DocumentBuilder()
-    .setTitle('nest example')
-    .setDescription('The nest API description')
-    .setVersion('1.0')
+    .setTitle(configParams.title || 'The nest title')
+    .setDescription(configParams.description || 'The nest API description')
+    .setVersion(configParams.version || '1.0')
     .addSecurity(AUTHORIZATION_PREFIX, {
       type: 'apiKey',
       in: 'header',
@@ -20,8 +27,8 @@ export async function setupSwagger(app: INestApplication): Promise<void> {
   const document = SwaggerModule.createDocument(app, config, {
     extraModels: [CommonResult, PageInfo],
   });
-  SwaggerModule.setup('api', app, document);
-  new Logger().log(`Swagger Doc: http://localhost:${process.env.PORT}/api`);
+  SwaggerModule.setup(configParams.path || 'docs', app, document);
+  new Logger().log(`Swagger Doc: http://localhost:${process.env.PORT}/${configParams.path || 'docs'}`);
 }
 
 export const ApiPaginatedResponse = <TModel extends Type<any>>(model: TModel) => {

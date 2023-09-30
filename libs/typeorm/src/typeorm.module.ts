@@ -1,17 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule as DefaultTypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategy';
-
-const envFilePath = process.env.NODE_ENV === 'production' ? '.env' : `.env.${process.env.NODE_ENV}`;
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath,
-    }),
-    TypeOrmModule.forRoot({
+    DefaultTypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
       port: Number(process.env.DB_PORT),
