@@ -1,0 +1,71 @@
+{{
+var className = it.fn.camel(it.tableName, true);
+var isHaveBase = Boolean(it.isHaveBase);
+var isHaveDate = it.columns.filter(i => i.columnType === 'Date').length > 0;
+var dictArr = it.columns.filter(i => Boolean(i.dictType));
+var validatorArr = Array.from(new Set(it.columns.filter(i => Boolean(i.validatorType)).map(i => i.validatorType)));
+}}
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+{{? validatorArr && validatorArr.length > 0 }}
+import { {{~validatorArr:column:i}}{{=column}}{{? i < validatorArr.length - 1 }}, {{?}}{{~}} } from 'class-validator';
+{{?}}
+{{? dictArr && dictArr.length > 0 }}
+import { Status{{? isHaveBase }}, Base{{?}} } from '@libs/common';
+import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+{{?}}
+{{? isHaveDate }}
+import { formatDate } from 'lib';
+{{?}}
+$blankline
+/**
+ * {{=it.tableComment}}
+ */
+@Entity()
+{{? isHaveBase }}
+export class {{=className}} extends Base {
+{{??}}
+export class {{=className}} {
+{{?}}
+{{~it.columns:column:index}}
+{{? column.columnComment }}
+  /**
+   * {{=column.columnComment}}
+   */
+{{?}}
+  {{? column.isPk }}
+  @PrimaryGeneratedColumn()
+  {{=column.columnName}}: {{=column.columnType}};
+  {{?? column.columnType === 'Date'}}
+  @Column({
+    nullable: true,
+    type: 'timestamp',
+    transformer: {
+      from(value: Date): string {
+        return formatDate(value, 'YYYY-MM-DD HH:mm:ss');
+      },
+      to(value: Date): Date {
+        return value;
+      },
+    },
+  })
+  {{=column.columnName}}: {{=column.columnType}};
+  {{?? Boolean(column.dictType)}}
+{{? column.dictType === 'Status' }}
+  @ApiProperty({ enum: [Status.YES, Status.NO] })
+  @Type(() => Number)
+  @IsEnum(Status)
+  @Column({ default: Status.NO, type: 'tinyint' })
+  {{=column.columnName}}: Status;
+{{?}}
+  {{??}}
+  @Column({{{? column.columnComment }} comment: '{{=column.columnComment}}'{{?}}{{? column.columnType === 'string' && column.length > 0 }}, length: {{=column.length}}{{?}}{{? !column.isRequired }}, nullable: true{{?}} })
+{{? column.validatorType }}
+  @{{=column.validatorType}}()
+{{?}}  
+  {{=column.columnName}}: {{=column.columnType}};
+  {{?}}
+{{? index < it.columns.length - 1 }}$blankline{{?}}
+{{~}}
+}
+$blankline

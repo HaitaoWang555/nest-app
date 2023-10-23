@@ -1,0 +1,98 @@
+{{
+var className = it.fn.camel(it.tableName, true);
+var isTree = Boolean(it.isTree);
+}}
+<script lang="ts" setup>
+import { query, create, update, findOne, remove{{? isTree }}, tree{{?}} } from './api'
+import { columnList } from './data'
+import type { Update{{=className}}Dto, Search{{=className}}DtoWithNotPage, {{=className}} } from './api'
+import type { PageParams } from '@/types/api'
+$blankline
+const CRUD = ref()
+const columns = ref(columnList)
+const queryParam: Search{{=className}}DtoWithNotPage = reactive({})
+$blankline
+const visible = ref(false)
+const title = '{{=it.tableComment}}'
+const defaultFormParams: Update{{=className}}Dto = {
+  id: undefined,
+  formType: 'add',
+}
+const formParams = reactive<Update{{=className}}Dto>(Object.assign({}, defaultFormParams))
+$blankline
+function refresh() {
+  CRUD.value.refresh()
+}
+// loadData
+function loadData(pageParams: PageParams) {
+  const params = Object.assign({}, queryParam, pageParams)
+  return query(params).then((res) => {
+    // format data
+    return res
+  })
+}
+$blankline
+function handleAdd() {
+  Object.assign(formParams, defaultFormParams)
+  visible.value = true
+}
+function handleDelete(row: {{=className}}) {
+  ElMessageBox.confirm('再次确认是否删除?', '警告', { type: 'warning' }).then(() => {
+    remove(row.id).then((res) => {
+      refresh()
+      ElMessage.success(res.data.message)
+    })
+  })
+}
+function edit(row: {{=className}}) {
+  formParams.formType = 'edit'
+  Object.assign(formParams, row)
+  visible.value = true
+}
+function submit(params: {{=className}}) {
+  const met = params.formType === 'add' ? create : update
+
+  return met(params).then((res) => {
+    ElMessage.success(res.data.message)
+    return res
+  })
+}
+
+function info(row: {{=className}}) {
+  formParams.formType = 'info'
+  Object.assign(formParams, row)
+  visible.value = true
+}
+function loadInfo(row: {{=className}}) {
+  return findOne(row.id).then((res) => {
+    return res
+  })
+}
+</script>
+$blankline
+<template>
+  <Crud
+    ref="CRUD"
+    :query-param="queryParam"
+    :form-params="formParams"
+    :columns="columns"
+    :model-value="visible"
+    :model-title="title"
+    :data="loadData"
+    :info="loadInfo"
+    :submit="submit"
+    @close-dialog="visible = false"
+  >
+    <template #btnTable>
+      <el-button type="primary" @click="handleAdd">添加</el-button>
+    </template>
+    <template #actionsTable="slotProps">
+      <el-button type="primary" link @click="info(slotProps.row)">详情</el-button>
+      <el-button type="primary" link @click="edit(slotProps.row)">编辑</el-button>
+      <el-button type="danger" link @click="handleDelete(slotProps.row)">删除</el-button>
+    </template>
+  </Crud>
+</template>
+$blankline
+<style rel="stylesheet/scss" lang="scss" scoped></style>
+$blankline

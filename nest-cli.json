@@ -6,13 +6,15 @@
     "deleteOutDir": true,
     "webpack": true,
     "tsConfigPath": "apps/admin/tsconfig.app.json",
-    "plugins": [  {
-      "name": "@nestjs/swagger",
-      "options": {
-        "introspectComments": true,
-        "controllerKeyOfComment": "summary"
+    "plugins": [
+      {
+        "name": "@nestjs/swagger",
+        "options": {
+          "introspectComments": true,
+          "controllerKeyOfComment": "summary"
+        }
       }
-    }]
+    ]
   },
   "monorepo": true,
   "root": "apps/admin",
@@ -69,6 +71,21 @@
       "sourceRoot": "apps/templete/src",
       "compilerOptions": {
         "tsConfigPath": "apps/templete/tsconfig.app.json"
+      }
+    },
+    "generate": {
+      "type": "application",
+      "root": "apps/generate",
+      "entryFile": "main",
+      "sourceRoot": "apps/generate/src",
+      "compilerOptions": {
+        "assets": [
+          {
+            "include": "assets/**/*",
+            "watchAssets": true
+          }
+        ],
+        "tsConfigPath": "apps/generate/tsconfig.app.json"
       }
     }
   },
