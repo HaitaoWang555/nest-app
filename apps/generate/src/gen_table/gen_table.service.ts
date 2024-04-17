@@ -13,7 +13,7 @@ import { dirname } from 'path';
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { EOL } from 'os';
 import { diffLines } from 'diff';
-
+// TODO: 兼容不同系统路径
 @Injectable()
 export class GenTableService {
   private readonly logger = new Logger(GenTableService.name);

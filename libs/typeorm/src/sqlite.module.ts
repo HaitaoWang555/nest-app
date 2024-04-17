@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule as DefaultTypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategy';
+import { sep } from 'path';
 
-const dbPath = `${__dirname}/`.replace('/dist', '');
+const dbPath = `${__dirname}${sep}`.replace(sep + 'dist', '');
 
 @Module({
   imports: [

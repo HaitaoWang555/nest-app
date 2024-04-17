@@ -5,15 +5,14 @@ import { CommonModule } from '@libs/common';
 import { TypeormSqliteModule } from '@libs/typeorm';
 import { AppInterceptor } from './app.interceptor';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
-console.log(__dirname);
+import { join, sep } from 'path';
 
 @Module({
   imports: [
     CommonModule,
     TypeormSqliteModule,
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, 'assets/dist'),
+      rootPath: join(__dirname, `assets${sep}dist`),
     }),
     ...Object.values(modules),
   ],
