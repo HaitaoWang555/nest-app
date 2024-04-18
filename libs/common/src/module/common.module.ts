@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { WinstonModule } from 'nest-winston';
 import { sep } from 'path';
+import { getWinstonOptions } from '../utils/winston-options';
 
 const envFilePath =
   process.env.NODE_ENV === 'production'
@@ -14,6 +16,12 @@ console.log(envFilePath);
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath,
+    }),
+    WinstonModule.forRootAsync({
+      useFactory: (config: ConfigService) => {
+        return getWinstonOptions(config);
+      },
+      inject: [ConfigService],
     }),
   ],
 })

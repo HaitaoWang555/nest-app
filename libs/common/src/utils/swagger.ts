@@ -1,8 +1,9 @@
-import { applyDecorators, INestApplication, Type, Logger } from '@nestjs/common';
+import { applyDecorators, INestApplication, Type } from '@nestjs/common';
 import { ApiOkResponse, DocumentBuilder, getSchemaPath, SwaggerModule } from '@nestjs/swagger';
 import { PageInfo } from '../api/common-page';
 import { CommonResult } from '../api/common-result';
 import { AUTHORIZATION_PREFIX } from './consts';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 export async function setupSwagger(
   app: INestApplication,
@@ -28,7 +29,9 @@ export async function setupSwagger(
     extraModels: [CommonResult, PageInfo],
   });
   SwaggerModule.setup(configParams.path || 'docs', app, document);
-  new Logger().log(`Swagger Doc: http://localhost:${process.env.PORT}/${configParams.path || 'docs'}`);
+  app
+    .get(WINSTON_MODULE_NEST_PROVIDER)
+    .log(`Swagger Doc: http://localhost:${process.env.PORT}/${configParams.path || 'docs'}`);
 }
 
 export const ApiPaginatedResponse = <TModel extends Type<any>>(model: TModel) => {
