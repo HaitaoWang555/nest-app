@@ -1,12 +1,13 @@
-import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { HttpAdapterHost } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import * as bodyParser from 'body-parser';
 import { setupSwagger } from './swagger';
 import { AllExceptionsFilter } from './exceptions';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { RequestIdMiddleware } from '../middlewares/request-id.middleware';
 
-export function commonBootstrap(app: INestApplication<any>) {
+export async function commonBootstrap(module: any) {
+  const app = await NestFactory.create(module, { bufferLogs: true, abortOnError: false });
   // 中间件
   app.use(RequestIdMiddleware);
   // Logger
@@ -23,4 +24,5 @@ export function commonBootstrap(app: INestApplication<any>) {
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost));
   // validator @Allow()
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+  await app.listen(Number(process.env.PORT) || 3000);
 }
