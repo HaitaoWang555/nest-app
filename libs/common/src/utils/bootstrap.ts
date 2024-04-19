@@ -4,8 +4,11 @@ import * as bodyParser from 'body-parser';
 import { setupSwagger } from './swagger';
 import { AllExceptionsFilter } from './exceptions';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { RequestIdMiddleware } from '../middlewares/request-id.middleware';
 
 export function commonBootstrap(app: INestApplication<any>) {
+  // 中间件
+  app.use(RequestIdMiddleware);
   // Logger
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
   // swagger

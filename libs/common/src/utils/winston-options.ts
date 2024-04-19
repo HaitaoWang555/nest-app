@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import * as chalk from 'chalk';
 import { sep } from 'path';
 import { WinstonModuleOptions } from 'nest-winston';
+import { RequestContext } from '../model/request-context.model';
 
 export function getWinstonOptions(config: ConfigService): WinstonModuleOptions {
   const appName = config.get('APP_NAME') || 'NestApp';
@@ -24,17 +25,17 @@ export function getWinstonOptions(config: ConfigService): WinstonModuleOptions {
   }
 
   function formatLog(log: Record<string, any>) {
+    const requestId = RequestContext?.currentContext?.getRequestId();
     const { timestamp, level, context = '', message, ...rest } = log;
-    const baseLine = `${chalk.green('[' + appName + ']')} ${chalk.green(process.pid)} - ${timestamp} ${level} ${chalk.yellow('[' + context + ']')} - ${chalk.green(message)}`;
+    const baseLine = `${chalk.green('[' + appName + ']')} ${chalk.green(process.pid)} ${requestId || ''} ${timestamp} ${chalk.green(level.toLocaleUpperCase())} ${chalk.yellow('[' + context + ']')} ${chalk.green(message)}`;
 
-    return `${baseLine} - ${chalk.yellow(beautifulString(rest))}`;
+    return `${baseLine} ${chalk.yellow(beautifulString(rest))}`;
   }
 
   function formatLogProd(log: Record<string, any>) {
-    const { timestamp, level, context = '', message, ...rest } = log;
-    const baseLine = `[${appName}] ${process.pid} - ${timestamp} ${level} [${context}] - ${message}`;
+    const requestId = RequestContext?.currentContext?.getRequestId();
 
-    return `${baseLine} - ${beautifulString(rest)}`;
+    return JSON.stringify({ pid: process.pid, requestId: requestId, ...log });
   }
 
   const transports: winston.transport[] = [];
