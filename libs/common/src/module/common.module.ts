@@ -9,8 +9,6 @@ const envFilePath =
     ? `${__dirname}${sep}.env`.replace(sep + 'dist', '')
     : `${__dirname}${sep}.env.${process.env.NODE_ENV}`.replace(sep + 'dist', '');
 
-console.log(envFilePath);
-
 @Module({
   imports: [
     ConfigModule.forRoot({

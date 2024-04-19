@@ -14,11 +14,10 @@ export async function commonBootstrap(module: any) {
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
   // swagger
   if (!process.env.SWAGGER_ENABLE || process.env.SWAGGER_ENABLE === '1') {
-    setupSwagger(app, { title: '代码生成项目API文档' });
+    setupSwagger(app, { title: process.env.SWAGGER_TITLE });
   }
-  // the next two lines did the trick
-  app.use(bodyParser.json({ limit: '20mb' }));
-  app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }));
+  app.use(bodyParser.json({ limit: process.env.MAX_BODY_SIZE }));
+  app.use(bodyParser.urlencoded({ limit: process.env.MAX_BODY_SIZE, extended: true }));
   // app.exceptions
   const httpAdapterHost = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost));
