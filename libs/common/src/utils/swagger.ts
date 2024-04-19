@@ -31,7 +31,7 @@ export async function setupSwagger(
   SwaggerModule.setup(configParams.path || 'docs', app, document);
   app
     .get(WINSTON_MODULE_NEST_PROVIDER)
-    .log(`Swagger Doc: http://localhost:${process.env.PORT}/${configParams.path || 'docs'}`);
+    .log(`Swagger Doc: http://localhost:${process.env.PORT}/${configParams.path || 'docs'}`, 'SetupSwagger');
 }
 
 export const ApiPaginatedResponse = <TModel extends Type<any>>(model: TModel) => {

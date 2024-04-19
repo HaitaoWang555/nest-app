@@ -24,14 +24,14 @@ export function getWinstonOptions(config: ConfigService): WinstonModuleOptions {
   }
 
   function formatLog(log: Record<string, any>) {
-    const { timestamp, level, context, message, ...rest } = log;
+    const { timestamp, level, context = '', message, ...rest } = log;
     const baseLine = `${chalk.green('[' + appName + ']')} ${chalk.green(process.pid)} - ${timestamp} ${level} ${chalk.yellow('[' + context + ']')} - ${chalk.green(message)}`;
 
     return `${baseLine} - ${chalk.yellow(beautifulString(rest))}`;
   }
 
   function formatLogProd(log: Record<string, any>) {
-    const { timestamp, level, context, message, ...rest } = log;
+    const { timestamp, level, context = '', message, ...rest } = log;
     const baseLine = `[${appName}] ${process.pid} - ${timestamp} ${level} [${context}] - ${message}`;
 
     return `${baseLine} - ${beautifulString(rest)}`;
