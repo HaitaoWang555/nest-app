@@ -38,5 +38,5 @@
       ]
     }
   },
-  "include": ["app/**/*.ts", "libs/**/*.ts", "types/env.d.ts"],
+  "include": ["apps/**/*.ts", "libs/**/*.ts", "types/env.d.ts"],
 }
