@@ -3,6 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { WinstonModule } from 'nest-winston';
 import { sep } from 'path';
 import { getWinstonOptions } from '../utils/winston-options';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { AppInterceptor } from './app.interceptor';
 
 const envFilePath =
   process.env.NODE_ENV === 'production'
@@ -21,6 +23,12 @@ const envFilePath =
       },
       inject: [ConfigService],
     }),
+  ],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AppInterceptor,
+    },
   ],
 })
 export class CommonModule {}
