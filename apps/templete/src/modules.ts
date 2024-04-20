@@ -1,3 +1,3 @@
-export { PoetryModule } from './poetry/poetry.module';
-export { RedisModule } from './redis/redis.module';
-export { AdministrativeDivisionsModule } from './administrative_divisions/administrative_divisions.module';
+export { PoetryModule } from './modules/poetry/poetry.module';
+export { RedisModule } from './modules/redis/redis.module';
+export { AdministrativeDivisionsModule } from './modules/administrative_divisions/administrative_divisions.module';
