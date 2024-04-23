@@ -1,13 +1,12 @@
 import * as winston from 'winston';
 import 'winston-daily-rotate-file';
-import { ConfigService } from '@nestjs/config';
 import * as chalk from 'chalk';
 import { sep } from 'path';
 import { WinstonModuleOptions } from 'nest-winston';
 import { RequestContext } from '../model/request-context.model';
 
-export function getWinstonOptions(config: ConfigService): WinstonModuleOptions {
-  const appName = config.get('APP_NAME') || 'NestApp';
+export function getWinstonOptions(): WinstonModuleOptions {
+  const appName = process.env.APP_NAME || 'NestApp';
   const dirname = 'logs' + sep + appName;
 
   function beautifulString(rest: Record<string, any>) {

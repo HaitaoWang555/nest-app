@@ -1,15 +1,19 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { WinstonModule } from 'nest-winston';
 import { sep } from 'path';
 import { getWinstonOptions } from '../utils/winston-options';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AppInterceptor } from './app.interceptor';
 
-const envFilePath =
+let envFilePath =
   process.env.NODE_ENV === 'production'
     ? `${__dirname}${sep}.env`.replace(sep + 'dist', '')
     : `${__dirname}${sep}.env.${process.env.NODE_ENV}`.replace(sep + 'dist', '');
+
+if (process.env.NODE_ENV === 'test') {
+  envFilePath = `${process.env.TEST_ROOT_DIR}${sep}.env.${process.env.NODE_ENV}`;
+}
 
 @Module({
   imports: [
@@ -18,10 +22,9 @@ const envFilePath =
       envFilePath,
     }),
     WinstonModule.forRootAsync({
-      useFactory: (config: ConfigService) => {
-        return getWinstonOptions(config);
+      useFactory: () => {
+        return getWinstonOptions();
       },
-      inject: [ConfigService],
     }),
   ],
   providers: [

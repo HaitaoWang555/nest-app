@@ -7,7 +7,18 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "debugger nest",
+      "name": "debugger admin",
+      "runtimeExecutable": "pnpm",
+      "args": ["start:debug", "admin"],
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "debugger templete",
       "runtimeExecutable": "pnpm",
       "args": ["start:debug", "templete"],
       "skipFiles": [
