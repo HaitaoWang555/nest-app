@@ -1,4 +1,4 @@
-import { InjectRedis } from '@libs/redis/redis.decorators';
+import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Injectable } from '@nestjs/common';
 import { Redis } from 'ioredis';
 import { parse } from 'redis-info';

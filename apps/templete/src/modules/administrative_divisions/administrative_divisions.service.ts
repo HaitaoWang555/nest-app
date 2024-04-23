@@ -6,7 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Equal, Like, TreeRepository } from 'typeorm';
 import { AdministrativeDivisions } from './entities/administrative_divisions.entity';
 import { ApiException, PageInfo, readLinesFromFile } from '@libs/common';
-import { InjectRedis } from '@libs/redis/redis.decorators';
+import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Redis } from 'ioredis';
 
 @Injectable()
