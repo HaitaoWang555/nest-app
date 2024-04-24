@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
-import { RedisHealthModule } from '@nestjs-modules/ioredis';
 import { HealthController } from './health.controller';
+import { RedisHealthIndicator } from './redis-health.provider';
 
 @Module({
-  imports: [TerminusModule, RedisHealthModule],
+  imports: [TerminusModule],
+  providers: [RedisHealthIndicator],
   controllers: [HealthController],
 })
 export class HealthModule {}
