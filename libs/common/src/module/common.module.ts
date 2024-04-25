@@ -5,6 +5,7 @@ import { sep } from 'path';
 import { getWinstonOptions } from '../utils/winston-options';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AppInterceptor } from './app.interceptor';
+import { VersionController } from './version.controller';
 
 let envFilePath =
   process.env.NODE_ENV === 'production'
@@ -33,5 +34,6 @@ if (process.env.NODE_ENV === 'test') {
       useClass: AppInterceptor,
     },
   ],
+  controllers: [VersionController],
 })
 export class CommonModule {}
