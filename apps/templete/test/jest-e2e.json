@@ -5,5 +5,14 @@
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "globals": {
+    "BUILD_DATE": "2024/4/22 15:10:05"
+  },
+  "moduleNameMapper": {
+    "^apps/(.*)": "<rootDir>/../../../apps/$1",
+    "^@libs/redis(|/.*)$": "<rootDir>/../../../libs/redis/src/$1",
+    "^@libs/typeorm(|/.*)$": "<rootDir>/../../../libs/typeorm/src/$1",
+    "^@libs/common(|/.*)$": "<rootDir>/../../../libs/common/src/$1"
   }
 }

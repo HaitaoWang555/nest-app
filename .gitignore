@@ -41,4 +41,4 @@ static
 
 .eslintcache
 .temp
-db.sqlite
+*.sqlite

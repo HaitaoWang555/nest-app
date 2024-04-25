@@ -55,7 +55,7 @@ declare namespace NodeJS {
     /**
      * 项目环境
      */
-    readonly NODE_ENV: 'dev' | 'production';
+    readonly NODE_ENV: 'dev' | 'production' | 'test';
     /**
      * bodyParser maximum request body size
      */

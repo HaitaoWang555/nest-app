@@ -19,7 +19,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./apps/admin/test/jest-e2e.json"
+    "test:e2e": "jest --detectOpenHandles --config ./apps/templete/test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs-modules/ioredis": "2.0.2",
@@ -49,6 +49,7 @@
     "sqlite3": "5.1.7",
     "typeorm": "0.3.20",
     "typeorm-naming-strategy": "2.0.7",
+    "webpack": "5.91.0",
     "uuid": "9.0.1",
     "winston": "3.13.0",
     "winston-daily-rotate-file": "5.0.0"
@@ -91,7 +92,7 @@
       "ts"
     ],
     "rootDir": ".",
-    "testRegex": ".*\\.spec\\.ts$",
+    "testRegex": "spec.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
@@ -104,7 +105,11 @@
       "<rootDir>/apps/",
       "<rootDir>/libs/"
     ],
+    "globals": {
+      "BUILD_DATE": "2024/4/22 15:10:05"
+    },
     "moduleNameMapper": {
+      "^apps/(.*)": "<rootDir>/apps/$1",
       "^@libs/redis(|/.*)$": "<rootDir>/libs/redis/src/$1",
       "^@libs/typeorm(|/.*)$": "<rootDir>/libs/typeorm/src/$1",
       "^@libs/common(|/.*)$": "<rootDir>/libs/common/src/$1"
