@@ -5,7 +5,7 @@ import { sep } from 'path';
 import { getWinstonOptions } from '../utils/winston-options';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AppInterceptor } from './app.interceptor';
-import { VersionController } from './version.controller';
+import { VersionController } from './version/version.controller';
 
 let envFilePath =
   process.env.NODE_ENV === 'production'
