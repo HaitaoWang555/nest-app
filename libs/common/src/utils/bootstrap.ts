@@ -1,7 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import * as bodyParser from 'body-parser';
-import * as helmet from 'helmet';
+import helmet from 'helmet';
 import { setupSwagger } from './swagger';
 import { AllExceptionsFilter } from './exceptions';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
@@ -10,13 +10,12 @@ import { RequestIdMiddleware } from '../middlewares/request-id.middleware';
 export async function commonBootstrap(module: any) {
   const app = await NestFactory.create(module, { bufferLogs: true, abortOnError: false });
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   app.use(helmet());
   // 中间件
   app.use(RequestIdMiddleware);
   // Logger
-  app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
+  const logger = app.get(WINSTON_MODULE_NEST_PROVIDER);
+  app.useLogger(logger);
   // swagger
   if (!process.env.SWAGGER_ENABLE || process.env.SWAGGER_ENABLE === '1') {
     setupSwagger(app, { title: process.env.SWAGGER_TITLE });
@@ -28,5 +27,15 @@ export async function commonBootstrap(module: any) {
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost));
   // validator @Allow()
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+
+  // unhandledRejection
+  process.on('unhandledRejection', (reason: string, promise: Promise<unknown>) => {
+    logger.error(`Unhandled Rejection at: ${promise}, reason: ${reason}`);
+    throw reason;
+  });
+  // uncaughtException
+  process.on('uncaughtException', (error) => {
+    logger.error(error);
+  });
   await app.listen(Number(process.env.PORT) || 3000);
 }

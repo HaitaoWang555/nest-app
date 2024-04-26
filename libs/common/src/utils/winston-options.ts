@@ -33,8 +33,10 @@ export function getWinstonOptions(): WinstonModuleOptions {
 
   function formatLogProd(log: Record<string, any>) {
     const requestId = RequestContext?.currentContext?.getRequestId();
+    const { timestamp, level, context = '', message, ...rest } = log;
+    const baseLine = `${appName} ${process.pid} ${requestId || ''} ${timestamp} ${level.toLocaleUpperCase()} ${context} ${message}`;
 
-    return JSON.stringify({ pid: process.pid, requestId: requestId, ...log });
+    return `${baseLine} ${beautifulString(rest)}`;
   }
 
   const transports: winston.transport[] = [];
@@ -86,7 +88,5 @@ export function getWinstonOptions(): WinstonModuleOptions {
 
   return {
     transports,
-    exceptionHandlers: [new winston.transports.File({ dirname, filename: 'exceptions.log' })],
-    rejectionHandlers: [new winston.transports.File({ dirname, filename: 'rejections.log' })],
   };
 }
