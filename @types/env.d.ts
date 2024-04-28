@@ -60,5 +60,9 @@ declare namespace NodeJS {
      * bodyParser maximum request body size
      */
     readonly MAX_BODY_SIZE: string;
+    /**
+     * 缓存配置
+     */
+    readonly BACKEND_CACHE_PROVIDER: 'memory' | 'redis';
   }
 }
