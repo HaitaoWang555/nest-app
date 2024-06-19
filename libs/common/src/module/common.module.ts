@@ -16,11 +16,17 @@ if (process.env.NODE_ENV === 'test') {
   envFilePath = `${process.env.TEST_ROOT_DIR}${sep}.env.${process.env.NODE_ENV}`;
 }
 
+function mergeEnvPath() {
+  // merge .env .env.${process.env.NODE_ENV}
+  const commonPath = envFilePath.replace(`.${process.env.NODE_ENV}`, '');
+  return [commonPath, envFilePath];
+}
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath,
+      envFilePath: mergeEnvPath(),
     }),
     WinstonModule.forRootAsync({
       useFactory: () => {

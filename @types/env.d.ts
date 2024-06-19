@@ -64,5 +64,21 @@ declare namespace NodeJS {
      * 缓存配置
      */
     readonly BACKEND_CACHE_PROVIDER: 'memory' | 'redis';
+    /**
+     * GITHUB_CLIENTID
+     */
+    readonly GITHUB_CLIENTID: string;
+    /**
+     * GITHUB_CLIENTSECRET
+     */
+    readonly GITHUB_CLIENTSECRET: string;
+    /**
+     * GOOGLE_CLIENTID
+     */
+    readonly GOOGLE_CLIENTID: string;
+    /**
+     * GOOGLE_CLIENTSECRET
+     */
+    readonly GOOGLE_CLIENTSECRET: string;
   }
 }
