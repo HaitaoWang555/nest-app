@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'test') {
 function mergeEnvPath() {
   // merge .env .env.${process.env.NODE_ENV}
   const commonPath = envFilePath.replace(`.${process.env.NODE_ENV}`, '');
-  return [commonPath, envFilePath];
+  return [envFilePath, commonPath];
 }
 
 @Module({
