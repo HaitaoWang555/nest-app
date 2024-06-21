@@ -4,10 +4,11 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { GithubStrategy } from './strategy/github.strategy';
 import { GoogleStrategy } from './strategy/google.strategy';
+import { LocalStrategy } from './strategy/local.strategy';
 
 @Module({
   imports: [CommonModule],
   controllers: [AuthController],
-  providers: [GoogleStrategy, GithubStrategy, AuthService],
+  providers: [LocalStrategy, GoogleStrategy, GithubStrategy, AuthService],
 })
 export class AuthModule {}
